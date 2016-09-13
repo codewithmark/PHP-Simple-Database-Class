@@ -100,10 +100,6 @@ class SimpleDBClass
         //merger array to get all rows
         $result = array_merge($d1 , $d2); 
       }
-
-      //Close the current connection to the database
-      mysqli_close($con);
-      
       //Will return a row data
       return $result;
       }
@@ -117,9 +113,9 @@ class SimpleDBClass
     /*
       $insert_arrays[] = array
       (
-          'user_acc_id' => "multiple_updated value now",
-          'pod_id' => $GetUniqueFileName,
-        'pod_title'=>'pod_title'
+        'user_id' => "codemaster",
+        'email_id' => 'mk@codewithmark.com',
+        'user_name'=> 'codewithmark'
       );
       
       Call it like this:
@@ -216,9 +212,6 @@ class SimpleDBClass
         //Will give the last inserted id
         $result =  $con->insert_id;      
       }
-
-      //Close the current connection to the database
-      mysqli_close($con);
       
       //Will return a row data
       return $result; 
@@ -299,9 +292,6 @@ class SimpleDBClass
       {  
         $result = 1;
       }
-
-      //Close the current connection to the database
-      mysqli_close($con);
       
       //Will return a row data
       return $result; 
@@ -347,9 +337,6 @@ class SimpleDBClass
       {   
         $result = 0;
       }
-
-      //Close the current connection to the database
-      mysqli_close($con);
       
       //Will return a row data
       return $result;
@@ -396,9 +383,6 @@ class SimpleDBClass
         //$result = true;
         $result = 1;
       }
-
-      //Close the current connection to the database
-      mysqli_close($con);
       
       //Will return a row data
       return $result;
@@ -413,11 +397,7 @@ class SimpleDBClass
     */
     // Create connection
     $con =  $this->isConn;
-
     $str = mysqli_real_escape_string($con,$Data); 
-
-    //Close the current connection to the database
-    mysqli_close($con);
     return $str;
   } 
 
@@ -432,12 +412,8 @@ class SimpleDBClass
     $str = mysqli_real_escape_string($con,$Data);
     
     $result = preg_replace('/(?:<|&lt;)\/?([a-zA-Z]+) *[^<\/]*?(?:>|&gt;)/', '', $str);
-
-    //Close the current connection to the database
-    mysqli_close($con);
     
     return $result;
-      
   } 
 }
 
