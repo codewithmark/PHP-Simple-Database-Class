@@ -1,4 +1,22 @@
 <?php
+/*
+ 
+  Project  SimpleDBClass  
+
+  Author    Mark Kumar
+
+  Site      http://codewithmark.com/
+  
+  Link      https://github.com/codewithmark/php-simple-database-functions
+
+  Howto Doc http://codewithmark.com/?p=251
+  
+  version   1.16.10.17
+
+  copyright Copyright (c) 2010-2016
+  license   http://opensource.org/licenses/gpl-3.0.html GNU Public License
+
+ */
 
 class SimpleDBClass
 {
@@ -107,11 +125,11 @@ class SimpleDBClass
   //--->Select - End
 
 
-  //--->Insert - Start
-  function Insert($TableName,$row_arrays = array() ) 
+  //--->Insert - Start  
+  function Insert($TableName, $row_arrays = array()  ) 
   { 
     /*
-      $insert_arrays[] = array
+      $insert_arrays = array
       (
         'user_id' => "codemaster",
         'email_id' => 'mk@codewithmark.com',
@@ -123,70 +141,19 @@ class SimpleDBClass
 
       If ran successfully, it will return the insert id else 0
 
-    */
+  */  
 
-    // Setup arrays for Actual Values, and Placeholders
-    $values = array();
-    $place_holders = array();
-    $query = "";
-    $query_columns = "";
+    foreach( array_keys($row_arrays) as $key ) 
+    {
+      $columns[] = "$key";
+      $values[] = "'" .  $row_arrays[$key] . "'";
+    }
+    //Get columns and values
+    $columns = implode(",", $columns);
+    $values = implode(",", $values);
+
+    $sql = "INSERT INTO $TableName ($columns) VALUES ($values)";
     
-    $query .= "INSERT INTO {$TableName} (";
-    
-      foreach($row_arrays as $count => $row_array)
-      {
-
-          foreach($row_array as $key => $value) 
-          {
-
-              if($count == 0) 
-              {
-                  if($query_columns) 
-                  {
-                    $query_columns .= ",".$key."";                          
-                  } 
-                  else 
-                  {
-                    $query_columns .= "".$key."";
-                  }
-              }
-
-              $values[] =  $value;
-        
-              if(is_numeric($value)) 
-              {
-                  if(isset($place_holders[$count])) 
-                  {
-                    $place_holders[$count] .= ", '$value'";
-                  } 
-                  else 
-                  {
-                    $place_holders[$count] = "( '$value'";
-                  }
-              } 
-              else 
-              {
-                  if(isset($place_holders[$count])) 
-                  {
-                    $place_holders[$count] .= ", '$value'";
-                  } 
-                  else 
-                  {
-                    $place_holders[$count] = "( '$value'";
-                  }
-              }
-              
-          }
-              // mind closing the GAP
-              $place_holders[$count] .= ")";
-      }
-    
-    $query .= " $query_columns ) VALUES ";
-    
-    $query .= implode(', ', $place_holders);
-
-    $sql = $query; 
-
     $con =  $this->isConn;
 
     // Check connection
@@ -241,7 +208,7 @@ class SimpleDBClass
         'rec_id' => 2,
         'rec_dt' => date("Y-m-d"),    
       );
-      Call it like this:  Update($strTableName, $array_fields, $array_where)
+      Call it like this:  Update('table', $array_fields, $array_where)
     * 
     */
 
@@ -300,16 +267,34 @@ class SimpleDBClass
   //--->Update - End
 
   //--->Delete - Start
-  function Delete($strTableName,$strFieldName,$strFieldDeleteValueEqualTo)
+  function Delete($strTableName,$array_where)
   {
     /*
       This will delete all rows where field name equals delete value. 
       If it ran successfully, it will return 1 else 0
 
-      Call it like this:  Delete("users","user_id","codewithmark");
+      Call it like this:
+
+      $array_where = array(    
+      'rec_id' => 2,
+      'rec_dt' => date("Y-m-d"),
+      );
+
+      Delete('table',$array_where);
 
     */
     
+    //Get where fields and value
+    foreach($array_where as $key=>$value) 
+    {
+      if($key) 
+      {
+        $field_where[] = " $key='$value' ";
+      }
+    }
+    $fields_where = implode( ' and ', $field_where );
+
+
     // Create connection
     $con =  $this->isConn;
     
@@ -319,21 +304,29 @@ class SimpleDBClass
       die("Connection failed in query function - " . mysqli_connect_error());
     }
     //check to see if the record exist
-    $QFindRec = "SELECT * FROM $strTableName WHERE $strFieldName='$strFieldDeleteValueEqualTo'";
+    //$QFindRec = "SELECT * FROM $strTableName WHERE $strFieldName='$strFieldDeleteValueEqualTo'";
+
+    //$QFindRec = "SELECT * FROM $strTableName WHERE $fields_where ";
+
+    $QDeleteRec = "DELETE FROM $strTableName WHERE $fields_where";
+
+    //echo $QDeleteRec;
     
     if($con)
     {
-      $q = $con->query($QFindRec);
+      $q = $con->query($QDeleteRec);
 
-      if($q->num_rows > 0 )
+      if($q)
       {
         //found the record(s) and now delete it
-        $QDeleteRec = "DELETE FROM $strTableName WHERE $strFieldName='$strFieldDeleteValueEqualTo'";
-        $con->query($QDeleteRec);
+        //$QDeleteRec = "DELETE FROM $strTableName WHERE $strFieldName='$strFieldDeleteValueEqualTo'";
+        //$QDeleteRec = "DELETE FROM $strTableName WHERE $fields_where";
+
+        //$con->query($QDeleteRec);
 
         $result = 1;
       }
-      if($q->num_rows < 1)
+      if(!$q)
       {   
         $result = 0;
       }
