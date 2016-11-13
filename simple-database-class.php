@@ -11,7 +11,7 @@
 
   Howto Doc http://codewithmark.com/?p=251
   
-  version   1.16.10.17
+  version   1.16.11.13
 
   copyright Copyright (c) 2010-2016
   license   http://opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -64,7 +64,9 @@ class SimpleDBClass
   {
     /*
     * This will get all of the rows from the table.  
-    * Call it like - $Qry = Select( "SELECT * FROM Users WHERE site='codewithmark'")  
+    * Call it like - 
+    * $db = new SimpleDBClass("host_name", "user_id", "password","database")
+    * $Qry = $db->Select( "SELECT * FROM Users WHERE site='codewithmark'")  
     */
     
     // Create connection
@@ -137,7 +139,8 @@ class SimpleDBClass
       );
       
       Call it like this:
-      Insert('table',$insert_arrays);
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->Insert('table',$insert_arrays);
 
       If ran successfully, it will return the insert id else 0
 
@@ -208,8 +211,10 @@ class SimpleDBClass
         'rec_id' => 2,
         'rec_dt' => date("Y-m-d"),    
       );
-      Call it like this:  Update('table', $array_fields, $array_where)
-    * 
+      Call it like this:  
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->Update('table', $array_fields, $array_where)
+    
     */
 
     //Get the update fields and value
@@ -280,7 +285,8 @@ class SimpleDBClass
       'rec_dt' => date("Y-m-d"),
       );
 
-      Delete('table',$array_where);
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->Delete('table',$array_where);
 
     */
     
@@ -343,10 +349,12 @@ class SimpleDBClass
   function Qry($SQLStatement)
   {
     /*
-     This is for general purpose query. 
-     If it ran successfully, it will return 1 else 0.
+      This is for general purpose query. 
+      If it ran successfully, it will return 1 else 0.
 
-     Call it like this:  Qry('select * from user where id=100');
+      Call it like this:  
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->Qry('select * from user where id=100');
 
     */
     // Create connection
@@ -387,6 +395,10 @@ class SimpleDBClass
   {
     /*
       This will help in preventing sql injections
+
+      Call it like this:
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->CleanDBData($_POST["user_name"]); 
     */
     // Create connection
     $con =  $this->isConn;
@@ -398,6 +410,8 @@ class SimpleDBClass
   {
     /*
       This will remove all HTML tags
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->CleanHTMLData($_POST["user_entry"]); 
     */
     
     // Create connection
@@ -409,5 +423,4 @@ class SimpleDBClass
     return $result;
   } 
 }
-
 ?>
