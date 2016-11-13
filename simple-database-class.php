@@ -64,9 +64,9 @@ class SimpleDBClass
   {
     /*
     * This will get all of the rows from the table.  
-    * Call it like - 
-    * $db = new SimpleDBClass("host_name", "user_id", "password","database")
-    * $Qry = $db->Select( "SELECT * FROM Users WHERE site='codewithmark'")  
+      Call it like - 
+      $db = new SimpleDBClass("host_name", "user_id", "password","database")
+      $Qry = $db->Select( "SELECT * FROM Users WHERE site='codewithmark'")  
     */
     
     // Create connection
