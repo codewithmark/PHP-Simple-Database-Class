@@ -26,8 +26,6 @@ class SimpleDBClass
   //For trouble shooting only
   public $ShowQryErrors = 'on'; //on or off
 
-  //private $db_conn = array('host' => 'localhost','database' => 'localhost', 'user' => 'user','pass' => 'pass', );
-
   //--->Connect to database - Start
   public function __construct( $db_conn = array('host' => 'localhost', 'user' => 'root','pass' => '','database' => 'test', ) )  
   {
