@@ -9,9 +9,9 @@
   
   Link      https://github.com/codewithmark/php-simple-database-functions
 
-  Howto Doc http://codewithmark.com/?p=251
+  Howto Doc http://codewithmark.com/php-simple-database-class/
   
-  version   1.16.11.13
+  version   1.17.05.08
 
   copyright Copyright (c) 2010-2016
   license   http://opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -26,11 +26,17 @@ class SimpleDBClass
   //For trouble shooting only
   public $ShowQryErrors = 'on'; //on or off
 
+  //private $db_conn = array('host' => 'localhost','database' => 'localhost', 'user' => 'user','pass' => 'pass', );
 
   //--->Connect to database - Start
-  public function __construct($host="localhost", $user="root", $pass="",$database="")
+  public function __construct( $db_conn = array('host' => 'localhost', 'user' => 'root','pass' => '','database' => 'test', ) )  
   {
-    
+    $host = isset($db_conn['host']) ? $db_conn['host'] : 'localhost' ;
+    $user = isset($db_conn['user']) ? $db_conn['user'] : 'root' ;
+    $pass = isset($db_conn['pass']) ? $db_conn['pass'] : '' ;
+
+    $database = isset($db_conn['database']) ? $db_conn['database'] : die('no database set') ;
+
     // Create connection
     $connection = mysqli_connect($host, $user, $pass,$database);
 
