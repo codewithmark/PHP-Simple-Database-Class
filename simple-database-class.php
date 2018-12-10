@@ -9,7 +9,7 @@
   
   Link      https://github.com/codewithmark/php-simple-database-functions
 
-  Howto Doc http://codewithmark.com/php-simple-database-class/
+  Howto Doc http://codewithmark.com/php-simple-database-class
   
   version   1.17.05.08
 
